@@ -31,7 +31,7 @@ resource "aws_subnet" "bastion_public_subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Bastion-Public-Subnet"
+    Ne = "Bastion-Public-Subnet"
   }
 }
 
@@ -46,6 +46,11 @@ resource "aws_route_table" "bastion_public_rt" {
   tags = {
     Name = "Bastion-Public-rt"
   }
+}
+
+resource "aws_main_route_table_association" "bastion_main_asso" {
+  vpc_id = aws_vpc.bastion-vpc.id
+  route_table_id = aws_route_table.bastion_public_rt.id
 }
 
 resource "aws_route_table_association" "bastion_public_rta" {
@@ -152,6 +157,7 @@ resource "aws_route_table" "app_public_rt" {
     Name = "Public-app-rt"
   }
 }
+
 
 resource "aws_route_table_association" "app_public_rta" {
   subnet_id      = aws_subnet.app_public_subnet.id
@@ -441,7 +447,7 @@ resource "aws_iam_role" "vpc_flow_logs_role" {
 }
 
 resource "aws_iam_policy" "vpc_flow_logs_policy" {
-i  name        = "vpc-flow-logs-policy"
+  name        = "vpc-flow-logs-policy"
   description = "Allow VPC Flow Logs to write to CloudWatch Logs"
 
   policy = jsonencode({
